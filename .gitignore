@@ -1,0 +1,28 @@
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+terraform.tfvars
+
+# Secrets
+.env
+*.pem
+*.key
+
+# AWS
+.aws/
+
+# Lambda
+*.zip
+
+# Logs
+*.log
+
+# Mac
+.DS_Store
+
+# IDE
+.vscode/
+
+# Temp
+tmp/
