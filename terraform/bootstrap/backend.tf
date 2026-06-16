@@ -1,12 +1,12 @@
 resource "random_string" "bucket_suffix" {
   length  = 6
   special = false
-  upper = false
+  upper   = false
 }
 
-resource "aws_s3_bucket" "tf_state"{
+resource "aws_s3_bucket" "tf_state" {
   bucket = "sre-dd-state-${random_string.bucket_suffix.result}"
-  
+
 }
 resource "aws_s3_bucket_versioning" "versioning" {
   bucket = aws_s3_bucket.tf_state.id
