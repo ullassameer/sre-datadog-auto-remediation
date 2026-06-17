@@ -20,7 +20,7 @@ s3://{BUCKET}/scripts/diagnostics.sh \
 chmod +x \
 /tmp/diagnostics.sh
 
-sudo /tmp/diagnostics.sh
+sudo /tmp/diagnostics.sh {BUCKET}
 """
 
 ]
