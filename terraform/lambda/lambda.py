@@ -3,26 +3,19 @@ import os
 
 ssm = boto3.client("ssm")
 
-INSTANCE_ID = os.environ["INSTANCE_ID"]
+INSTANCE=os.environ["INSTANCE_ID"]
+
+BUCKET=os.environ["BUCKET"]
+
 
 def lambda_handler(event, context):
 
-    response = ssm.send_command(
+    commands = [
 
-        InstanceIds=[INSTANCE_ID],
-
-        DocumentName="AWS-RunShellScript",
-
-        Parameters={
-
-            "commands":[
-
-                """
-mkdir -p /tmp/sre
-
+f"""
 aws s3 cp \
-s3://BUCKET/scripts/diagnostics.sh \
-/tmp/
+s3://{BUCKET}/scripts/diagnostics.sh \
+/tmp/diagnostics.sh
 
 chmod +x \
 /tmp/diagnostics.sh
@@ -30,10 +23,27 @@ chmod +x \
 sudo /tmp/diagnostics.sh
 """
 
-            ]
+]
+
+    response = ssm.send_command(
+
+        InstanceIds=[INSTANCE],
+
+        DocumentName="AWS-RunShellScript",
+
+        Parameters={
+
+            "commands": commands
 
         }
 
     )
 
-    return response
+    return {
+
+        "status": "started",
+
+        "command_id":
+response["Command"]["CommandId"]
+
+    }

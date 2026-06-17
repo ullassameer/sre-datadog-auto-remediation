@@ -32,7 +32,7 @@ resource "aws_iam_policy" "logs_archive_upload" {
         Action = [
 
           "s3:PutObject",
-           "s3:GetObject",
+          "s3:GetObject",
           "s3:ListBucket"
 
         ]

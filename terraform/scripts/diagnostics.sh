@@ -22,3 +22,9 @@ tar -czf \
 /tmp/sre
 
 echo "Diagnostics completed"
+
+aws s3 cp \
+/tmp/sre/diagnostics.tar.gz \
+s3://$1/diagnostics/
+
+echo "Upload completed"

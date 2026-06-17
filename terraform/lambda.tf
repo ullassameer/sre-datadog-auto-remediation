@@ -72,7 +72,7 @@ resource "aws_lambda_function" "diagnostics" {
 
     variables = {
 
-      INSTANCE_ID = aws_instance.main.id
+      INSTANCE_ID = aws_instance.ec2.id
 
       BUCKET = aws_s3_bucket.logs_archive.bucket
 
