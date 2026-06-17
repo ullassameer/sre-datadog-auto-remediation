@@ -1,24 +1,27 @@
-import boto3
-import os
-
-ssm = boto3.client("ssm")
-
-INSTANCE=os.environ["INSTANCE_ID"]
-
-BUCKET=os.environ["BUCKET"]
-
-
 def lambda_handler(event, context):
+
+    usage = float(event.get("value", 0))
+
+    if usage < 0.70:
+
+        return {
+            "status": "skipped",
+            "reason": "disk below threshold"
+        }
 
     commands = [
 
 f"""
+rm -f /tmp/diagnostics.sh
+
 aws s3 cp \
 s3://{BUCKET}/scripts/diagnostics.sh \
 /tmp/diagnostics.sh
 
 chmod +x \
 /tmp/diagnostics.sh
+
+cat /tmp/diagnostics.sh | tail -20
 
 sudo /tmp/diagnostics.sh {BUCKET}
 """
@@ -32,18 +35,14 @@ sudo /tmp/diagnostics.sh {BUCKET}
         DocumentName="AWS-RunShellScript",
 
         Parameters={
-
             "commands": commands
-
         }
 
     )
 
     return {
-
         "status": "started",
-
+        "usage": usage,
         "command_id":
 response["Command"]["CommandId"]
-
     }
